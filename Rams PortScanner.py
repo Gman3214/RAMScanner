@@ -79,7 +79,7 @@ def main(argv):
             dividedPortMinMax = str(round (portIncrements * (index + 1) - portIncrements + 1)) + '-' + str(portIncrements * (index + 1))
 
         #creating the thread and starting it
-        thread = Thread(target = scanThread, args = (targetAddress, dividedPortMinMax, index))
+        thread = Thread(target = scanThread, args = (targetAddress, dividedPortMinMax))
         thread.start()
     
 
