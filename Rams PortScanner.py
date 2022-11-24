@@ -25,13 +25,10 @@ def scanThread(target, portRange):
             s.close()
          
     except KeyboardInterrupt:
-        print("\n Exiting Program !!!!")
-        sys.exit()
-    except socket.gaierror:
-        print("\n Hostname Could Not Be Resolved !!!!")
+        print("\n Interrupt detected aborting scan")
         sys.exit()
     except socket.error:
-        print("\ Server not responding !!!!")
+        print("\ Target not responding")
         sys.exit()
     
 
@@ -70,6 +67,8 @@ def main(argv):
     #and rounding them so we dont get a float
     portIncrements = round( (int( portMinMax[1] ) - int( portMinMax[0])) / threadAmount )
 
+    threads = []
+
     #divides the port range into small segments for each thread
     for index in range(threadAmount):
         #incase the number we divided isnt a natural number we set the last thread to reach the max port number
@@ -81,6 +80,11 @@ def main(argv):
         #creating the thread and starting it
         thread = Thread(target = scanThread, args = (targetAddress, dividedPortMinMax))
         thread.start()
+        threads.append(thread)
+    
+    # once finshed tell the threads to close
+    for thread in threads:
+        thread.join()
     
 
 if __name__ == "__main__":
